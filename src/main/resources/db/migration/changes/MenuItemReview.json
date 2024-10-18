@@ -2,17 +2,6 @@
     "databaseChangeLog": [
         {
             "changeSet": {
-                "id": "1",
-                "author": "OscarB",
-                "changes": [
-                {
-                    "dropTable": {
-                    "tableName": "MenuItemReview"
-                    }
-                }
-                ]
-            },
-            "changeSet": {
                 "id": "MenuItemReview-1",
                 "author": "OscarB",
                 "preConditions": [
