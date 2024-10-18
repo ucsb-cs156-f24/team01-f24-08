@@ -2,6 +2,17 @@
     "databaseChangeLog": [
         {
             "changeSet": {
+                "id": "1",
+                "author": "OscarB",
+                "changes": [
+                {
+                    "dropTable": {
+                    "tableName": "MenuItemReview"
+                    }
+                }
+                ]
+            },
+            "changeSet": {
                 "id": "MenuItemReview-1",
                 "author": "OscarB",
                 "preConditions": [
@@ -12,7 +23,7 @@
                         "not": [
                             {
                                 "tableExists": {
-                                    "tableName": "MenuItemReview"
+                                    "tableName": "MENUITEMREVIEW"
                                 }
                             }
                         ]
@@ -64,7 +75,7 @@
                                     }
                                 }
                             ],
-                            "tableName": "MenuItemReview"
+                            "tableName": "MENUITEMREVIEW"
                         }
                     }
                 ]
