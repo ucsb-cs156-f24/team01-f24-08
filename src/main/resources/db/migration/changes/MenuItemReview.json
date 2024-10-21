@@ -27,7 +27,7 @@
                                         "autoIncrement": true,
                                         "constraints": {
                                             "primaryKey": true,
-                                            "primaryKeyName": "CONSTRAINT_1"
+                                            "primaryKeyName": "MENUITEMREVIEW_PK"
                                         },
                                         "name": "ID",
                                         "type": "BIGINT"
