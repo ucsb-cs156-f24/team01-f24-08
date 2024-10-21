@@ -2,7 +2,7 @@
     "databaseChangeLog": [
       {
         "changeSet": {
-          "id": "articles-1",
+          "id": "Articles-1",
           "author": "ChristyY",
           "preConditions": [
             {
@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "articles"
+                    "tableName": "ARTICLES"
                   }
                 }
               ]
@@ -27,7 +27,7 @@
                       "autoIncrement": true,
                       "constraints": {
                         "primaryKey": true,
-                        "primaryKeyName": "CONSTRAINT_5"
+                        "primaryKeyName": "CONSTRAINT_6"
                       },
                       "name": "ID",
                       "type": "BIGINT"
@@ -64,7 +64,7 @@
                     }
                   }
                 ],
-                "tableName": "articles"
+                "tableName": "ARTICLES"
               }
             }
           ]
