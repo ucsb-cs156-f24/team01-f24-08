@@ -46,8 +46,10 @@ public class MenuItemReviewController {
     /**
      * Create a new date
      * 
-     * @param quarterYYYYQ  the quarter in the format YYYYQ
-     * @param name          the name of the date
+     * @param itemId  the id of the item to be reviewed
+     * @param reviewerEmail  the email of the reviewer
+     * @param stars  the number of stars given in the review
+     * @param comments  the comments of the review
      * @param localDateTime the date
      * @return the saved ucsbdate
      */
