@@ -31,7 +31,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/menuitemreview")
 @RestController
 @Slf4j
-public class MenuItemReviewController {
+public class MenuItemReviewController  extends ApiController {
     @Autowired
     MenuItemReviewRepository menuItemReviewRepository;
 
@@ -41,6 +41,23 @@ public class MenuItemReviewController {
     public Iterable<MenuItemReview> allMenuItemReviews() {
         Iterable<MenuItemReview> reviews = menuItemReviewRepository.findAll();
         return reviews;
+    }
+
+    /**
+     * Get a single date by id
+     * 
+     * @param id the id of the review
+     * @return a MenuItemReview
+     */
+    @Operation(summary= "Get a single menu item review")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public MenuItemReview getById(
+            @Parameter(name="id") @RequestParam Long id) {
+        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
+        return menuItemReview;
     }
 
     /**
