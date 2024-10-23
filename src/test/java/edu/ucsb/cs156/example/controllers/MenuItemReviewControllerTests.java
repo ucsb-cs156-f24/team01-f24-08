@@ -72,6 +72,13 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase {
                             .andExpect(status().is(403)); // only admins can post
     }
 
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void logged_in_admin_users_can_post() throws Exception {
+            mockMvc.perform(post("/api/menuitemreview/post?itemId=1&reviewerEmail=testemail@ucsb.edu&dateReviewed=2022-01-03T00:00:00&stars=5&comments=test\""))
+                            .andExpect(status().is(200)); // only admins can post
+    }
+
     @WithMockUser(roles = { "USER" })
         @Test
         public void logged_in_user_can_get_all_menuitemreviews() throws Exception {
