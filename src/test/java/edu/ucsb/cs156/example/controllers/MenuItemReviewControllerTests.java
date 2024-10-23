@@ -76,7 +76,7 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase {
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
     public void logged_in_admin_users_can_post() throws Exception {
-
+            // arrange
 
             LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
 
@@ -90,10 +90,13 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase {
 
             when(menuItemReviewRepository.save(eq(menuItemReview))).thenReturn(menuItemReview);
 
+            // act
             MvcResult response = mockMvc.perform(post("/api/menuitemreview/post?itemId=1&reviewerEmail=testemail@ucsb.edu&dateReviewed=2022-01-03T00:00:00&stars=5&comments=test")
                     .with(csrf()))
                 .andExpect(status().is(200)).andReturn(); // only admins can post
 
+            // assert
+            
             verify(menuItemReviewRepository, times(1)).save(menuItemReview);
             String expectedJson = mapper.writeValueAsString(menuItemReview);
             String responseString = response.getResponse().getContentAsString();
