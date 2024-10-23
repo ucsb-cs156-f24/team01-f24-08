@@ -9,20 +9,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * This is a JPA entity that represents a restaurant.
- */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "restaurants")
-public class Restaurant {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+@Entity(name = "ucsbdiningcommonsmenuitem")
+public class UCSBDiningCommonsMenuItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-  private String name;
-  private String description;
+    private String diningCommonsCode;
+    private String name;
+    private String station;
 }
