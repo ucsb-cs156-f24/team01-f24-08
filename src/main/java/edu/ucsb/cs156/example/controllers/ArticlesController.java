@@ -74,7 +74,7 @@ public class ArticlesController {
         // private String email;
         // private LocalDateTime dateAdded;
 
-        Articles savedArticle = ArticlesRepository.save(article);
+        Articles savedArticle = articlesRepository.save(article);
 
         return savedArticle;
     }
