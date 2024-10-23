@@ -4,6 +4,7 @@ import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
 import edu.ucsb.cs156.example.ControllerTestCase;
 import edu.ucsb.cs156.example.entities.MenuItemReview;
+import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
 
 import java.util.ArrayList;
@@ -75,9 +76,29 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase {
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
     public void logged_in_admin_users_can_post() throws Exception {
-            mockMvc.perform(post("/api/menuitemreview/post?itemId=1&reviewerEmail=testemail@ucsb.edu&dateReviewed=2022-01-03T00:00:00&stars=5&comments=test")
+
+
+            LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+
+            MenuItemReview menuItemReview = MenuItemReview.builder()
+                                    .itemId(1L)
+                                    .reviewerEmail("testemail@ucsb.edu")
+                                    .dateReviewed(ldt1)
+                                    .stars(5)
+                                    .comments("test")
+                                    .build();
+
+            when(menuItemReviewRepository.save(eq(menuItemReview))).thenReturn(menuItemReview);
+
+            MvcResult response = mockMvc.perform(post("/api/menuitemreview/post?itemId=1&reviewerEmail=testemail@ucsb.edu&dateReviewed=2022-01-03T00:00:00&stars=5&comments=test")
                     .with(csrf()))
-                .andExpect(status().is(200)); // only admins can post
+                .andExpect(status().is(200)).andReturn(); // only admins can post
+
+            verify(menuItemReviewRepository, times(1)).save(menuItemReview);
+            String expectedJson = mapper.writeValueAsString(menuItemReview);
+            String responseString = response.getResponse().getContentAsString();
+            assertEquals(expectedJson, responseString);
+
     }
 
     @WithMockUser(roles = { "USER" })
