@@ -50,7 +50,7 @@ public class MenuItemReviewController {
      * @param reviewerEmail  the email of the reviewer
      * @param stars  the number of stars given in the review
      * @param comments  the comments of the review
-     * @param localDateTime the date
+     * @param dateReviewed the date
      * @return the saved ucsbdate
      */
     @Operation(summary= "Create a new review")
