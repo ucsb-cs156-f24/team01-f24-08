@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -59,11 +60,36 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                             .andExpect(status().is(200)); // logged
     }
 
-    // @Test
-    // public void logged_out_users_cannot_get_by_id() throws Exception {
-    //         mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem?id=0"))
-    //                         .andExpect(status().is(403)); // logged out users can't get by id
-    // }
+    @Test
+    public void logged_out_users_cannot_get_by_id() throws Exception {
+            mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem?id=0"))
+                            .andExpect(status().is(403)); // logged out users can't get by id
+    }
+
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void logged_in_users_can_get_by_id() throws Exception {
+            UCSBDiningCommonsMenuItem ucsbDCMI1 = UCSBDiningCommonsMenuItem.builder()
+                        .diningCommonsCode("Test1")
+                        .name("TEST2")
+                        .station("TEST3")
+                        .build();
+
+            when(ucsbDiningCommonsMenuItemRepository.findById(eq(15L)))
+                    .thenReturn(Optional.of(ucsbDCMI1));
+
+            MvcResult response = mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem?id=15"))
+                                    .andExpect(status().isOk()).andReturn();// logged in users can get by id
+
+            verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(15L);
+            String expected = mapper.writeValueAsString(ucsbDCMI1);
+            String responseString = response.getResponse().getContentAsString();
+            assertEquals(expected, responseString);
+            
+            mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem?id=1"))
+                            .andExpect(status().is(404));
+
+    }
 
     //TESTS FOR POST
     @Test
