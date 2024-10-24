@@ -44,7 +44,7 @@ import java.time.LocalDateTime;
     }
 
     /**
-     * Get a single date by id
+     * Get a single MenuItemReview by id
      * 
      * @param id the id of the review
      * @return a MenuItemReview
@@ -61,7 +61,7 @@ import java.time.LocalDateTime;
     }
 
     /**
-     * Create a new date
+     * Create a new MenuItemReview
      * 
      * @param itemId  the id of the item to be reviewed
      * @param reviewerEmail  the email of the reviewer
@@ -98,6 +98,52 @@ import java.time.LocalDateTime;
 <span class="fc" id="L98">        MenuItemReview savedMenuItemReview = menuItemReviewRepository.save(menuItemReview);</span>
 
 <span class="fc" id="L100">        return savedMenuItemReview;</span>
+    }
+
+        /**
+     * Delete a MenuItemReview
+     * 
+     * @param id the id of the review to delete
+     * @return a message indicating the review was deleted
+     */
+    @Operation(summary= &quot;Delete a MenuItemReview&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteUCSBDate(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L114">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
+<span class="fc" id="L115">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
+
+<span class="fc" id="L117">                menuItemReviewRepository.delete(menuItemReview);</span>
+<span class="fc" id="L118">        return genericMessage(&quot;MenuItemReview with id %s deleted&quot;.formatted(id));</span>
+    }
+
+        /**
+     * Update a single MenuItemReview
+     * 
+     * @param id       id of the review to update
+     * @param incoming the new review
+     * @return the updated date object
+     */
+    @Operation(summary= &quot;Update a single review&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @PutMapping(&quot;&quot;)
+    public MenuItemReview updateMenuItemReview(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id,
+            @RequestBody @Valid MenuItemReview incoming) {
+
+<span class="fc" id="L135">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
+<span class="fc" id="L136">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
+
+<span class="fc" id="L138">        menuItemReview.setItemId(incoming.getItemId());</span>
+<span class="fc" id="L139">        menuItemReview.setReviewerEmail(incoming.getReviewerEmail());</span>
+<span class="fc" id="L140">        menuItemReview.setStars(incoming.getStars());</span>
+<span class="fc" id="L141">        menuItemReview.setComments(incoming.getComments());</span>
+<span class="fc" id="L142">        menuItemReview.setDateReviewed(incoming.getDateReviewed());</span>
+
+<span class="fc" id="L144">        menuItemReviewRepository.save(menuItemReview);</span>
+
+<span class="fc" id="L146">        return menuItemReview;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
