@@ -37,23 +37,23 @@ import java.time.LocalDateTime;
     @Autowired
     ArticlesRepository articlesRepository;
 
-    @Operation(summary = &quot;List all articles&quot;)
     @GetMapping(&quot;/all&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     public Iterable&lt;Articles&gt; allArticles() {
-<span class="fc" id="L44">        Iterable&lt;Articles&gt; article = articlesRepository.findAll();</span>
-<span class="fc" id="L45">        return article;</span>
+<span class="fc" id="L43">        Iterable&lt;Articles&gt; article = articlesRepository.findAll();</span>
+<span class="fc" id="L44">        return article;</span>
     }
 
-    @Operation(summary = &quot;Create a new article&quot;)
-    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+
+
+
     @PostMapping(&quot;/post&quot;)
     public Articles postArticles(
-            @Parameter(name = &quot;title&quot;) @RequestParam String title,
-            @Parameter(name = &quot;url&quot;) @RequestParam String url,
-            @Parameter(name = &quot;explanation&quot;) @RequestParam String explanation,
-            @Parameter(name = &quot;email&quot;) @RequestParam String email,
-            @Parameter(name = &quot;dateAdded&quot;, description = &quot;date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)&quot;) @RequestParam(&quot;dateAdded&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateAdded)
+            @Parameter(name=&quot;title&quot;) @RequestParam String title,
+            @Parameter(name=&quot;url&quot;) @RequestParam String url,
+            @Parameter(name=&quot;explanation&quot;) @RequestParam String explanation,
+            @Parameter(name=&quot;email&quot;) @RequestParam String email,
+            @Parameter(name=&quot;date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)&quot;) @RequestParam(&quot;dateAdded&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateAdded)
             throws JsonProcessingException {
 
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -68,15 +68,16 @@ import java.time.LocalDateTime;
 <span class="fc" id="L68">        article.setEmail(email);</span>
 <span class="fc" id="L69">        article.setDateAdded(dateAdded);</span>
 
+
         // private String title;
         // private String url;
         // private String explanation;
         // private String email;
         // private LocalDateTime dateAdded;
 
-<span class="fc" id="L77">        Articles savedArticle = articlesRepository.save(article);</span>
+<span class="fc" id="L78">        Articles savedArticle = articlesRepository.save(article);</span>
 
-<span class="fc" id="L79">        return savedArticle;</span>
+<span class="fc" id="L80">        return savedArticle;</span>
     }
 
 }
