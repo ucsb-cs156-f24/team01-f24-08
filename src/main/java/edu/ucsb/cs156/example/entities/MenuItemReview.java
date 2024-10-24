@@ -8,21 +8,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-/**
- * This is a JPA entity that represents a restaurant.
- */
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "restaurants")
-public class Restaurant {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+@Entity(name = "menuitemreview")
+public class MenuItemReview {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String name;
-  private String description;
+    private Long itemId;
+    private String reviewerEmail;
+    private int stars;
+    private LocalDateTime dateReviewed;
+    private String comments;
 }

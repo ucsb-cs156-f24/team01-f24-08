@@ -37,3 +37,5 @@ yarn-error.log*
 .stryker-tmp
 
 *storybook.log
+
+*storybook.log
