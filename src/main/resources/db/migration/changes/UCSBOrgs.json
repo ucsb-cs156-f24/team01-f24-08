@@ -24,31 +24,30 @@
                 "columns": [
                   {
                     "column": {
-                      "autoIncrement": true,
                       "constraints": {
                         "primaryKey": true,
                         "primaryKeyName": "UCSBORGS_PK"
                       },
-                      "name": "ID",
-                      "type": "BIGINT"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "LOCAL_DATE_TIME",
-                      "type": "TIMESTAMP"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "NAME",
+                      "name": "ORG_CODE",
                       "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
-                      "name": "QUARTERYYYYQ",
+                      "name": "ORG_TRANSLATION_SHORT",
                       "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                        "name": "ORG_TRANSLATION",
+                        "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "INACTIVE",
+                      "type": "BOOLEAN"
                     }
                   }
                 ],

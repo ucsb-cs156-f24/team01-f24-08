@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 
 public class UCSBOrgs {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private String orgCode;
     private String orgTranslationShort;
