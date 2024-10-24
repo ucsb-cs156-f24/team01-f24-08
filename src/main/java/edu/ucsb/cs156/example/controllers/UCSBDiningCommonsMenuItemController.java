@@ -94,24 +94,24 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
      * with the values passed in as a JSON object. 
      * If a matching row is not found, throw an EntityNotFoundException.
      */
-    // @Operation(summary= "Update a Dining Commons Menu Item")
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    // @PutMapping("")
-    // public UCSBDiningCommonsMenuItem updateUCSBDiningCommonsMenuItem(
-    //         @Parameter(name="id") @RequestParam Long id,
-    //         @RequestBody @Valid UCSBDiningCommonsMenuItem incoming) {
+    @Operation(summary= "Update a Dining Commons Menu Item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBDiningCommonsMenuItem updateUCSBDiningCommonsMenuItem(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid UCSBDiningCommonsMenuItem incoming) {
 
-    //     UCSBDiningCommonsMenuItem ucsbDCMI = ucsbDiningCommonsMenuItemRepository.findById(id)
-    //             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+        UCSBDiningCommonsMenuItem ucsbDCMI = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
 
-    //     ucsbDCMI.setDiningCommonsCode((incoming.getDiningCommonsCode()));
-    //     ucsbDCMI.setName(incoming.getName());
-    //     ucsbDCMI.setStation(incoming.getStation());  
+        ucsbDCMI.setDiningCommonsCode((incoming.getDiningCommonsCode()));
+        ucsbDCMI.setName(incoming.getName());
+        ucsbDCMI.setStation(incoming.getStation());  
 
-    //     ucsbDiningCommonsMenuItemRepository.save(ucsbDCMI);
+        ucsbDiningCommonsMenuItemRepository.save(ucsbDCMI);
 
-    //     return ucsbDCMI;
-    // }
+        return ucsbDCMI;
+    }
 
     /**
      * Get a single record from the table; use the value passed in
