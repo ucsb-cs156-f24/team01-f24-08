@@ -7,11 +7,14 @@
 
 # testing
 /coverage
+<<<<<<< Updated upstream
 /reports
+=======
 /.nyc_output
 
 # Dont store storybook logs
 build-storybook.log
+>>>>>>> Stashed changes
 
 # production
 /build
@@ -32,5 +35,7 @@ yarn-error.log*
 .nyc_output/
 # stryker temp files
 .stryker-tmp
+
+*storybook.log
 
 *storybook.log
