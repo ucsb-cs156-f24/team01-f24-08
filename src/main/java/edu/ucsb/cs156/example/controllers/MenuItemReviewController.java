@@ -44,7 +44,7 @@ public class MenuItemReviewController  extends ApiController {
     }
 
     /**
-     * Get a single date by id
+     * Get a single MenuItemReview by id
      * 
      * @param id the id of the review
      * @return a MenuItemReview
@@ -61,7 +61,7 @@ public class MenuItemReviewController  extends ApiController {
     }
 
     /**
-     * Create a new date
+     * Create a new MenuItemReview
      * 
      * @param itemId  the id of the item to be reviewed
      * @param reviewerEmail  the email of the reviewer
@@ -98,5 +98,51 @@ public class MenuItemReviewController  extends ApiController {
         MenuItemReview savedMenuItemReview = menuItemReviewRepository.save(menuItemReview);
 
         return savedMenuItemReview;
+    }
+
+        /**
+     * Delete a MenuItemReview
+     * 
+     * @param id the id of the review to delete
+     * @return a message indicating the review was deleted
+     */
+    @Operation(summary= "Delete a MenuItemReview")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteUCSBDate(
+            @Parameter(name="id") @RequestParam Long id) {
+        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
+                menuItemReviewRepository.delete(menuItemReview);
+        return genericMessage("MenuItemReview with id %s deleted".formatted(id));
+    }
+
+        /**
+     * Update a single MenuItemReview
+     * 
+     * @param id       id of the review to update
+     * @param incoming the new review
+     * @return the updated date object
+     */
+    @Operation(summary= "Update a single review")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public MenuItemReview updateMenuItemReview(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid MenuItemReview incoming) {
+
+        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
+        menuItemReview.setItemId(incoming.getItemId());
+        menuItemReview.setReviewerEmail(incoming.getReviewerEmail());
+        menuItemReview.setStars(incoming.getStars());
+        menuItemReview.setComments(incoming.getComments());
+        menuItemReview.setDateReviewed(incoming.getDateReviewed());
+
+        menuItemReviewRepository.save(menuItemReview);
+
+        return menuItemReview;
     }
 }
