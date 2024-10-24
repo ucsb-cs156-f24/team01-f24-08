@@ -38,6 +38,7 @@ public class ArticlesController {
     ArticlesRepository articlesRepository;
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Iterable<Articles> allArticles() {
         Iterable<Articles> article = articlesRepository.findAll();
         return article;
