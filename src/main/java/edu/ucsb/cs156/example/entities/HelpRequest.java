@@ -31,5 +31,5 @@ public class HelpRequest {
     private String tableOrBreakoutRoom;
     private LocalDateTime requestTime;
     private String explanation;
-    boolean solved;
+    private boolean solved;
 }
