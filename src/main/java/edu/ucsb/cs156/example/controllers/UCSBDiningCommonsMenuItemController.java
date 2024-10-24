@@ -71,4 +71,19 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
 
         return savedUCSBDiningCommonsMenuItem;
     }
+
+    /**
+     * Delete a single record from the table; use the value passed in as a @RequestParam to do a lookup by id. If a matching row is not found, throw an EntityNotFoundException.
+     **/
+    @Operation(summary= "Delete a UCSBDiningCommonsMenuItem by id")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteUCSBDate(
+            @Parameter(name="id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        ucsbDiningCommonsMenuItemRepository.delete(ucsbDiningCommonsMenuItem);
+        return genericMessage("UCSBDiningCommonsMenuItem with id %s deleted".formatted(id));
+    }
 }
