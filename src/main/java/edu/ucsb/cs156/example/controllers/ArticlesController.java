@@ -62,17 +62,38 @@ public class ArticlesController extends ApiController {
         log.info("dateAdded={}", dateAdded);
 
         Articles article = new Articles();
-        article.setTitle(title);
-        article.setUrl(url);
-        article.setExplanation(explanation);
-        article.setEmail(email);
-        article.setDateAdded(dateAdded);
+        article.setTitle(title);                // private String title;
+        article.setUrl(url);                    // private String url;
+        article.setExplanation(explanation);    // private String explanation;
+        article.setEmail(email);                // private String email;
+        article.setDateAdded(dateAdded);        // private LocalDateTime dateAdded;
 
-        // private String title;
-        // private String url;
-        // private String explanation;
-        // private String email;
-        // private LocalDateTime dateAdded;
+        Articles savedArticle = articlesRepository.save(article);
+        return savedArticle;
+    }
+    /**
+     * Update a single date
+     * 
+     * @param id       id of the date to update
+     * @param incoming the new date
+     * @return the updated date object
+     */
+    @Operation(summary = "Update a single article")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public Articles updateaArticles(
+            @Parameter(name = "id") @RequestParam Long id,
+            @RequestBody @Valid Articles incoming) {
+
+        Articles article = articlesRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Articles.class, id));
+
+        //ucsbDate.setQuarterYYYYQ(incoming.getQuarterYYYYQ());
+        article.setTitle(incoming.getTitle());                // private String title;
+        article.setUrl(incoming.getUrl());                    // private String url;
+        article.setExplanation(incoming.getExplanation());    // private String explanation;
+        article.setEmail(incoming.getEmail());                // private String email;
+        article.setDateAdded(incoming.getDateAdded());        // private LocalDateTime dateAdded;
 
         Articles savedArticle = articlesRepository.save(article);
 
