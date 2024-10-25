@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/articles")
 @RestController
 @Slf4j
-public class ArticlesController {
+public class ArticlesController extends ApiController {
     @Autowired
     ArticlesRepository articlesRepository;
 
