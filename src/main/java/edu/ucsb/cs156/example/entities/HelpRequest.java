@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * This is a JPA entity that represents a UCSBDate, i.e. an entry
- * that comes from the UCSB API for academic calendar dates.
+ * This is a JPA entity that represents a help request, 
  */
 
 @Data
@@ -31,5 +30,5 @@ public class HelpRequest {
     private String tableOrBreakoutRoom;
     private LocalDateTime requestTime;
     private String explanation;
-    boolean solved;
+    private boolean solved;
 }
