@@ -55,6 +55,22 @@ import java.time.LocalDateTime;
 <span class="fc" id="L55">        return help_requests;</span>
     }
 
+    /**
+     * Get a single request by id
+     * @param id the id of the help request
+     * @return a HelpRequest
+     */
+    @Operation(summary= &quot;Get a single help request&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;&quot;)
+    public HelpRequest getById(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L68">        HelpRequest helpRequest = helpRequestRepository.findById(id)</span>
+<span class="fc" id="L69">                .orElseThrow(() -&gt; new EntityNotFoundException(HelpRequest.class, id));</span>
+
+<span class="fc" id="L71">        return helpRequest;</span>
+    }
+
      /**
      * Create a help request
      * @param requesterEmail the requester's email ID
@@ -79,19 +95,19 @@ import java.time.LocalDateTime;
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         // See: https://www.baeldung.com/spring-date-parameters
 
-<span class="fc" id="L82">        log.info(&quot;requestTime={}&quot;, requestTime);</span>
+<span class="fc" id="L98">        log.info(&quot;requestTime={}&quot;, requestTime);</span>
 
-<span class="fc" id="L84">        HelpRequest helpRequest = new HelpRequest(); </span>
-<span class="fc" id="L85">        helpRequest.setRequesterEmail(requesterEmail); </span>
-<span class="fc" id="L86">        helpRequest.setTeamId(teamId);</span>
-<span class="fc" id="L87">        helpRequest.setTableOrBreakoutRoom(tableOrBreakoutRoom);</span>
-<span class="fc" id="L88">        helpRequest.setRequestTime(requestTime);</span>
-<span class="fc" id="L89">        helpRequest.setExplanation(explanation);</span>
-<span class="fc" id="L90">        helpRequest.setSolved(solved);</span>
+<span class="fc" id="L100">        HelpRequest helpRequest = new HelpRequest(); </span>
+<span class="fc" id="L101">        helpRequest.setRequesterEmail(requesterEmail); </span>
+<span class="fc" id="L102">        helpRequest.setTeamId(teamId);</span>
+<span class="fc" id="L103">        helpRequest.setTableOrBreakoutRoom(tableOrBreakoutRoom);</span>
+<span class="fc" id="L104">        helpRequest.setRequestTime(requestTime);</span>
+<span class="fc" id="L105">        helpRequest.setExplanation(explanation);</span>
+<span class="fc" id="L106">        helpRequest.setSolved(solved);</span>
 
-<span class="fc" id="L92">        helpRequestRepository.save(helpRequest);</span>
+<span class="fc" id="L108">        helpRequestRepository.save(helpRequest);</span>
 
-<span class="fc" id="L94">        return helpRequest; </span>
+<span class="fc" id="L110">        return helpRequest; </span>
 
         }
 
