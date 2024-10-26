@@ -74,7 +74,7 @@ public class HelpRequestController extends ApiController {
 
      /**
      * Create a help request
-     * @param requestEmail the requester's email ID
+     * @param requesterEmail the requester's email ID
      * @param teamId          the team id of the requester
      * @param tableOrBreakoutRoom where the help request is coming from
      * @param requestTime the time help request was submitted
@@ -96,7 +96,7 @@ public class HelpRequestController extends ApiController {
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         // See: https://www.baeldung.com/spring-date-parameters
 
-        log.info("localDateTime={}", requestTime);
+        log.info("requestTime={}", requestTime);
 
         HelpRequest helpRequest = new HelpRequest(); 
         helpRequest.setRequesterEmail(requesterEmail); 
