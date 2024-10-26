@@ -79,7 +79,7 @@ public class HelpRequestController extends ApiController {
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         // See: https://www.baeldung.com/spring-date-parameters
 
-        log.info("localDateTime={}", requestTime);
+        log.info("requestTime={}", requestTime);
 
         HelpRequest helpRequest = new HelpRequest(); 
         helpRequest.setRequesterEmail(requesterEmail); 
