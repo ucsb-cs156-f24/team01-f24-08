@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f24/team01-f24-08
 owner: ucsb-cs156-f24
 repo_name: team01-f24-08
-pull_requests: [{"author":{"id":"MDQ6VXNlcjUzMjc5MDkx","is_bot":false,"login":"qwistaycat","name":"Christy Yu"},"headRefName":"cy-Articles-add-get-and-post","number":44,"title":"Cy articles add get and post","url":"https://github.com/ucsb-cs156-f24/team01-f24-08/pull/44"}]
+pull_requests: [{"author":{"id":"U_kgDOCMNTCg","is_bot":false,"login":"Mike-Petrus","name":""},"headRefName":"mike-petrus-controller-tests","number":60,"title":"mp RecommendationRequest, add GET and POST","url":"https://github.com/ucsb-cs156-f24/team01-f24-08/pull/60"},{"author":{"id":"MDQ6VXNlcjUzMjc5MDkx","is_bot":false,"login":"qwistaycat","name":"Christy Yu"},"headRefName":"cy-Articles-add-get-and-post","number":44,"title":"Cy articles add get and post","url":"https://github.com/ucsb-cs156-f24/team01-f24-08/pull/44"}]
