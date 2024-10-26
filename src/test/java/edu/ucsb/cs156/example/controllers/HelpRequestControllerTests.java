@@ -86,6 +86,7 @@ public class HelpRequestControllerTests extends ControllerTestCase{
         String expectedJson = mapper.writeValueAsString(expectedHelpRequests);
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
+
     }  
 
     @Test
@@ -140,7 +141,6 @@ public class HelpRequestControllerTests extends ControllerTestCase{
         assertEquals("EntityNotFoundException", json.get("type"));
         assertEquals("HelpRequest with id 7 not found", json.get("message"));
     }
-
 
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test

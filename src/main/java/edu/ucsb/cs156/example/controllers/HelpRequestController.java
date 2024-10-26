@@ -71,7 +71,6 @@ public class HelpRequestController extends ApiController {
         return helpRequest;
     }
 
-
      /**
      * Create a help request
      * @param requesterEmail the requester's email ID
