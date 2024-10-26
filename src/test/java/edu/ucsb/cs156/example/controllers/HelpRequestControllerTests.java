@@ -191,7 +191,7 @@ public class HelpRequestControllerTests extends ControllerTestCase{
         when(helpRequestRepository.save(eq(helpRequest1))).thenReturn(helpRequest1);
         // act
         MvcResult response = mockMvc.perform(
-                        post("/api/helprequests/post?requesterEmail=requester_email&teamId=team_id&tableOrBreakoutRoom=table_or_break   out&requestTime=2022-01-03T00:00:00&explanation=explain&solved=true")
+                        post("/api/helprequests/post?requesterEmail=requester_email&teamId=team_id&tableOrBreakoutRoom=table_or_break out&requestTime=2022-01-03T00:00:00&explanation=explain&solved=true")
                                 .with(csrf()))
                         .andExpect(status().isOk()).andReturn();
 
