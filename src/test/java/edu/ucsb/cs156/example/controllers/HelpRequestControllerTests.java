@@ -60,12 +60,31 @@ public class HelpRequestControllerTests extends ControllerTestCase{
                     .andExpect(status().is(200)); // logged
     }
 
+    @Test
+    public void logged_out_users_cannot_get_by_id() throws Exception {
+            mockMvc.perform(get("/api/helprequests?id=7"))
+                            .andExpect(status().is(403)); // logged out users can't get by id
+    }
+
+    @Test
+    public void logged_out_users_cannot_post() throws Exception {
+            mockMvc.perform(post("/api/helprequests/post"))
+                            .andExpect(status().is(403));
+    }
+
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void logged_in_regular_users_cannot_post() throws Exception {
+            mockMvc.perform(post("/api/helprequests/post"))
+                            .andExpect(status().is(403)); // only admins can post
+    }
+
     @WithMockUser(roles = { "USER" })
     @Test
     public void logged_in_user_can_get_all_helprequests() throws Exception {
+
         // arrange
         LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
-
         
         HelpRequest helpRequest1 = HelpRequest.builder()
                         .requesterEmail("requester_email")
@@ -104,20 +123,6 @@ public class HelpRequestControllerTests extends ControllerTestCase{
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
     }  
-
-    @Test
-    public void logged_out_users_cannot_get_by_id() throws Exception {
-            mockMvc.perform(get("/api/helprequests?id=7"))
-                            .andExpect(status().is(403)); // logged out users can't get by id
-    }
-
-    @WithMockUser(roles = { "USER" })
-        @Test
-        public void logged_in_regular_users_cannot_post() throws Exception {
-                mockMvc.perform(post("/api/requests/post"))
-                                .andExpect(status().is(403)); // only admins can post
-        }
-
 
     @WithMockUser(roles = { "USER" })
     @Test
@@ -186,7 +191,7 @@ public class HelpRequestControllerTests extends ControllerTestCase{
         when(helpRequestRepository.save(eq(helpRequest1))).thenReturn(helpRequest1);
         // act
         MvcResult response = mockMvc.perform(
-                        post("/api/helprequests/post?requesterEmail=requester_email&teamId=team_id&tableOrBreakoutRoom=table_or_breakout&requestTime=2022-01-03T00:00:00&explanation=explain&solved=true")
+                        post("/api/helprequests/post?requesterEmail=requester_email&teamId=team_id&tableOrBreakoutRoom=table_or_break   out&requestTime=2022-01-03T00:00:00&explanation=explain&solved=true")
                                 .with(csrf()))
                         .andExpect(status().isOk()).andReturn();
 
@@ -200,7 +205,7 @@ public class HelpRequestControllerTests extends ControllerTestCase{
 
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
-    public void admin_can_edit_an_existing_ucsbdate() throws Exception {
+    public void admin_can_edit_an_existing_helprequest() throws Exception {
 
             // arrange
             LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
@@ -221,7 +226,7 @@ public class HelpRequestControllerTests extends ControllerTestCase{
                                     .tableOrBreakoutRoom("new_table_or_breakout")
                                     .requestTime(ldt2) 
                                     .explanation("new_explain")
-                                    .solved(true)
+                                    .solved(false)
                                     .build(); 
 
             String requestBody = mapper.writeValueAsString(helpRequestEdited);
@@ -257,7 +262,7 @@ public class HelpRequestControllerTests extends ControllerTestCase{
                                     .tableOrBreakoutRoom("table_or_breakout")
                                     .requestTime(ldt1) 
                                     .explanation("explain")
-                                    .solved(true)
+                                    .solved(false)
                                     .build(); 
 
             String requestBody = mapper.writeValueAsString(editedHelpRequest);

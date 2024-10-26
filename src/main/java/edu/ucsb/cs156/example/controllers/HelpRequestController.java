@@ -80,7 +80,7 @@ public class HelpRequestController extends ApiController {
      * @param requestTime the time help request was submitted
      * @param explanation an explanation of the help request
      * @param solved bool that indicates if the issue has been solved
-     * @return the saved ucsbdate
+     * @return the saved help request
      */
     @Operation(summary= "Create a help request")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -129,7 +129,6 @@ public class HelpRequestController extends ApiController {
                 .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
 
         helpRequest.setExplanation(incoming.getExplanation());
-        helpRequest.setId(incoming.getId());
         helpRequest.setRequestTime(incoming.getRequestTime());
         helpRequest.setRequesterEmail(incoming.getRequesterEmail()); 
         helpRequest.setSolved(incoming.getSolved()); 
