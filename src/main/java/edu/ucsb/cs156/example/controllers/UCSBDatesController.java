@@ -140,7 +140,7 @@ public class UCSBDatesController extends ApiController {
         ucsbDate.setQuarterYYYYQ(incoming.getQuarterYYYYQ());
         ucsbDate.setName(incoming.getName());
         ucsbDate.setLocalDateTime(incoming.getLocalDateTime());
-
+        
         ucsbDateRepository.save(ucsbDate);
 
         return ucsbDate;
