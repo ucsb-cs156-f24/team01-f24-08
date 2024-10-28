@@ -142,5 +142,47 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
     }
+
+
+    // Test get by id
+    @Test
+    public void logged_out_users_cannot_get_by_id() throws Exception {
+            mockMvc.perform(get("/api/ucsborganization?orgCode=SKY"))
+                            .andExpect(status().is(403)); // logged out users can't get by id
+    }
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
+            // arrange
+            UCSBOrgs skiing = UCSBOrgs.builder()
+            .orgCode("SKI")
+            .orgTranslationShort("SKIING CLUB")
+            .orgTranslation("SKIING CLUB AT UCSB")
+            .inactive(false)
+            .build();
+            when(ucsbOrgsRepository.findById(eq("SKI"))).thenReturn(Optional.of(skiing));
+            // act
+            MvcResult response = mockMvc.perform(get("/api/ucsborganization?orgCode=SKI"))
+                            .andExpect(status().isOk()).andReturn();
+            // assert
+            verify(ucsbOrgsRepository, times(1)).findById(eq("SKI"));
+            String expectedJson = mapper.writeValueAsString(skiing);
+            String responseString = response.getResponse().getContentAsString();
+            assertEquals(expectedJson, responseString);
+    }
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
+            // arrange
+            when(ucsbOrgsRepository.findById(eq("ABC"))).thenReturn(Optional.empty());
+            // act
+            MvcResult response = mockMvc.perform(get("/api/ucsborganization?orgCode=ABC"))
+                            .andExpect(status().isNotFound()).andReturn();
+            // assert
+            verify(ucsbOrgsRepository, times(1)).findById(eq("ABC"));
+            Map<String, Object> json = responseToJson(response);
+            assertEquals("EntityNotFoundException", json.get("type"));
+            assertEquals("UCSBOrgs with id ABC not found", json.get("message"));
+    }
     
 }
