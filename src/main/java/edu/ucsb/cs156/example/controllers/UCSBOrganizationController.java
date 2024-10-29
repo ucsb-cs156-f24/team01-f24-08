@@ -110,7 +110,7 @@ public class UCSBOrganizationController extends ApiController  {
         ucsbOrgsRepository.delete(organization);
         return genericMessage("UCSBOrgs with id %s deleted".formatted(orgCode));
     }
-  
+    /* 
      * Update a single ucsborg. Accessible only to users with the role "ROLE_ADMIN".
      * @param orgCode code of the diningcommons
      * @param incoming the new commons contents
