@@ -91,4 +91,30 @@ public class UCSBOrganizationController extends ApiController  {
         .orElseThrow(() -> new EntityNotFoundException(UCSBOrgs.class, orgCode));
         return organization;
     }
+
+    /**
+     * Update a single ucsborg. Accessible only to users with the role "ROLE_ADMIN".
+     * @param orgCode code of the diningcommons
+     * @param incoming the new commons contents
+     * @return the updated commons object
+     */
+    @Operation(summary= "Update a single commons")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBOrgs updateOrgs(
+            @Parameter(name="orgCode") @RequestParam String orgCode,
+            @RequestBody @Valid UCSBOrgs incoming) {
+
+        UCSBOrgs org = ucsbOrgsRepository.findById(orgCode)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBOrgs.class, orgCode));
+
+
+        org.setOrgTranslationShort(incoming.getOrgTranslationShort());
+        org.setOrgTranslation(incoming.getOrgTranslation());
+        org.setInactive(incoming.getInactive());
+
+        ucsbOrgsRepository.save(org);
+
+        return org;
+    }
 }
