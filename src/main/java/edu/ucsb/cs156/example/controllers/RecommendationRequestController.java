@@ -128,12 +128,12 @@ public class RecommendationRequestController extends ApiController{
         RecommendationRequest recommendationRequest = recommendationRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
 
-        recommendationRequest.setRequesterEmail(requesterEmail);
-        recommendationRequest.setProfessorEmail(professorEmail);
-        recommendationRequest.setExplanation(explanation);
-        recommendationRequest.setDateRequested(dateRequested);
-        recommendationRequest.setDateNeeded(dateNeeded);
-        recommendationRequest.setDone(done);
+        recommendationRequest.setRequesterEmail(incoming.getRequesterEmail());
+        recommendationRequest.setProfessorEmail(incoming.getProfessorEmail());
+        recommendationRequest.setExplanation(incoming.getExplanation());
+        recommendationRequest.setDateRequested(incoming.getDateRequested());
+        recommendationRequest.setDateNeeded(incoming.getDateNeeded());
+        recommendationRequest.setDone(incoming.getDone());
 
         recommendationRequestRepository.save(recommendationRequest);
 
