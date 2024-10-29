@@ -4,14 +4,13 @@ import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
 import edu.ucsb.cs156.example.ControllerTestCase;
 import edu.ucsb.cs156.example.entities.Articles;
-import edu.ucsb.cs156.example.entities.Articles;
-import edu.ucsb.cs156.example.entities.Articles;
 import edu.ucsb.cs156.example.repositories.ArticlesRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -28,7 +27,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -208,12 +206,15 @@ public class ArticlesControllerTests extends ControllerTestCase {
         @Test
         public void admin_can_edit_an_existing_article() throws Exception {
                 // arrange
+                LocalDateTime origDateTime = LocalDateTime.parse("2022-01-03T00:00:00");
+                LocalDateTime editedDateTime = LocalDateTime.parse("2023-12-25T12:30:00");
+
                 Articles articleOrig = Articles.builder()
-                                .title("Who is the best professor at UCSB?")
-                                .url("https://www.reddit.com/r/UCSantaBarbara/comments/1e46yoe/who_is_the_best_professor_youve_had_who_is_the/")
-                                .explanation("A Reddit thread discussing the best professors at UCSB.")
-                                .email("noreply@reddit.com")
-                                .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
+                                .title("Original Title")
+                                .url("http://original.com")
+                                .explanation("Original explanation")
+                                .email("hello@original.com")
+                                .dateAdded(origDateTime)
                                 .id(67L)
                                 .build();
 
@@ -222,7 +223,7 @@ public class ArticlesControllerTests extends ControllerTestCase {
                                 .url("https://www.reddit.com/r/UCSantaBarbara/comments/1e46yoe/who_is_the_best_professor_youve_had_who_is_the/")
                                 .explanation("A Reddit thread discussing the best professors at UCSB.")
                                 .email("noreply@reddit.com")
-                                .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
+                                .dateAdded(editedDateTime)
                                 .id(67L)
                                 .build();
 
@@ -241,7 +242,17 @@ public class ArticlesControllerTests extends ControllerTestCase {
 
                 // assert
                 verify(articlesRepository, times(1)).findById(67L);
-                verify(articlesRepository, times(1)).save(articleEdited);
+
+                ArgumentCaptor<Articles> articlesCaptor = ArgumentCaptor.forClass(Articles.class);
+                verify(articlesRepository, times(1)).save(articlesCaptor.capture());
+                Articles savedArticle = articlesCaptor.getValue();
+
+                assertEquals(articleEdited.getTitle(), savedArticle.getTitle());
+                assertEquals(articleEdited.getUrl(), savedArticle.getUrl());
+                assertEquals(articleEdited.getExplanation(), savedArticle.getExplanation());
+                assertEquals(articleEdited.getEmail(), savedArticle.getEmail());
+                assertEquals(articleEdited.getDateAdded(), savedArticle.getDateAdded());
+
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(requestBody, responseString);
         }
