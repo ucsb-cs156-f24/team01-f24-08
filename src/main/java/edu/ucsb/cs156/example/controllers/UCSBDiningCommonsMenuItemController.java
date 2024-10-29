@@ -71,4 +71,62 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
 
         return savedUCSBDiningCommonsMenuItem;
     }
+
+    /**
+     * Delete a single record from the table; use the value passed in as a @RequestParam to do a lookup by id. If a matching row is not found, throw an EntityNotFoundException.
+     */
+    @Operation(summary= "Delete a UCSBDiningCommonsMenuItem by id")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteUCSBDate(
+            @Parameter(name="id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        ucsbDiningCommonsMenuItemRepository.delete(ucsbDiningCommonsMenuItem);
+        return genericMessage("UCSBDiningCommonsMenuItem with id %s deleted".formatted(id));
+    }
+
+    /**
+     * Get a single record from the table; use the value passed in 
+     * as a @RequestParam to do a lookup by id. 
+     * If a matching row is found, update that row 
+     * with the values passed in as a JSON object. 
+     * If a matching row is not found, throw an EntityNotFoundException.
+     */
+    @Operation(summary= "Update a Dining Commons Menu Item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBDiningCommonsMenuItem updateUCSBDiningCommonsMenuItem(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid UCSBDiningCommonsMenuItem incoming) {
+
+        UCSBDiningCommonsMenuItem ucsbDCMI = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        ucsbDCMI.setDiningCommonsCode((incoming.getDiningCommonsCode()));
+        ucsbDCMI.setName(incoming.getName());
+        ucsbDCMI.setStation(incoming.getStation());  
+
+        ucsbDiningCommonsMenuItemRepository.save(ucsbDCMI);
+
+        return ucsbDCMI;
+    }
+
+    /**
+     * Get a single record from the table; use the value passed in
+     *  as a @RequestParam to do a lookup by id. 
+     * If a matching row is found, return the row as a JSON object, 
+     * otherwise throw an EntityNotFoundException.
+     */
+    @Operation(summary= "Get a single UCSBDiningCommonsMenuItem by id")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public UCSBDiningCommonsMenuItem getById(
+            @Parameter(name="id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem ucsbDCMI = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        return ucsbDCMI;
+    }
 }
