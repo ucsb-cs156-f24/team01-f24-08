@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f24/team01-f24-08
 owner: ucsb-cs156-f24
 repo_name: team01-f24-08
-pull_requests: [{"author":{"id":"MDQ6VXNlcjY4MDg2NzYw","is_bot":false,"login":"yw2398","name":"Amber Wang"},"headRefName":"aw-ucsborg-update","number":71,"title":"AW - added files for PUT methods, updating existing UCSBOrgs table","url":"https://github.com/ucsb-cs156-f24/team01-f24-08/pull/71"},{"author":{"id":"U_kgDOCMNTCg","is_bot":false,"login":"Mike-Petrus","name":""},"headRefName":"Mike-RecommendationRequest-delete","number":68,"title":" REVIEW AFTER PUT - Mike recommendation request delete","url":"https://github.com/ucsb-cs156-f24/team01-f24-08/pull/68"}]
+pull_requests: [{"author":{"id":"MDQ6VXNlcjY4MDg2NzYw","is_bot":false,"login":"yw2398","name":"Amber Wang"},"headRefName":"aw-ucsborg-update","number":71,"title":"AW - added files for PUT methods, updating existing UCSBOrgs table","url":"https://github.com/ucsb-cs156-f24/team01-f24-08/pull/71"}]
