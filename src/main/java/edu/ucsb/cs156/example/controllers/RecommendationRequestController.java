@@ -112,10 +112,10 @@ public class RecommendationRequestController extends ApiController{
     }
 
     /**
-     * Delete a UCSBDate
+     * Delete a Recommendation Request
      * 
-     * @param id the id of the date to delete
-     * @return a message indicating the date was deleted
+     * @param id the id of the request to delete
+     * @return a message indicating the request was deleted
      */
     @Operation(summary= "Delete a recommendation request")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

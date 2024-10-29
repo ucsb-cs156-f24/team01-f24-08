@@ -231,7 +231,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
                 verify(recommendationRequestRepository, times(1)).delete(any());
 
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("Recommendation request with id 15 deleted", json.get("message"));
+                assertEquals("Recommendation Request with id 15 deleted", json.get("message"));
         }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
@@ -244,14 +244,14 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                delete("/api/recomendationrequest?id=15")
+                                delete("/api/recommendationrequest?id=15")
                                                 .with(csrf()))
                                 .andExpect(status().isNotFound()).andReturn();
 
                 // assert
                 verify(recommendationRequestRepository, times(1)).findById(15L);
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("Recommendation request with id 15 not found", json.get("message"));
+                assertEquals("RecommendationRequest with id 15 not found", json.get("message"));
         }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
