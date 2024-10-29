@@ -7,9 +7,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -21,12 +23,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
+import jakarta.validation.Valid;
+
 @Tag(name = "Articles")
 @RequestMapping("/api/articles")
 @RestController
 @Slf4j
 public class ArticlesController extends ApiController {
-
     @Autowired
     ArticlesRepository articlesRepository;
 
@@ -64,20 +67,41 @@ public class ArticlesController extends ApiController {
         log.info("dateAdded={}", dateAdded);
 
         Articles article = new Articles();
-        article.setTitle(title);
-        article.setUrl(url);
-        article.setExplanation(explanation);
-        article.setEmail(email);
-        article.setDateAdded(dateAdded);
+        article.setTitle(title); // private String title;
+        article.setUrl(url); // private String url;
+        article.setExplanation(explanation); // private String explanation;
+        article.setEmail(email); // private String email;
+        article.setDateAdded(dateAdded); // private LocalDateTime dateAdded;
 
-        // private String title;
-        // private String url;
-        // private String explanation;
-        // private String email;
-        // private LocalDateTime dateAdded;
         Articles savedArticle = articlesRepository.save(article);
-
         return savedArticle;
     }
 
+    /**
+     * Update a single date
+     * 
+     * @param id       id of the date to update
+     * @param incoming the new date
+     * @return the updated date object
+     */
+    @Operation(summary = "Update a single article")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public Articles updateaArticles(
+            @Parameter(name = "id") @RequestParam Long id,
+            @RequestBody @Valid Articles incoming) {
+
+        Articles article = articlesRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Articles.class, id));
+
+        article.setTitle(incoming.getTitle()); // private String title;
+        article.setUrl(incoming.getUrl()); // private String url;
+        article.setExplanation(incoming.getExplanation()); // private String explanation;
+        article.setEmail(incoming.getEmail()); // private String email;
+        article.setDateAdded(incoming.getDateAdded()); // private LocalDateTime dateAdded;
+
+        articlesRepository.save(article);
+
+        return article;
+    }
 }
