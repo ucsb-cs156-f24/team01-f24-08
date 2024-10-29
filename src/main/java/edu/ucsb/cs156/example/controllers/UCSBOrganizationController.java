@@ -98,7 +98,7 @@ public class UCSBOrganizationController extends ApiController  {
      * @param incoming the new commons contents
      * @return the updated commons object
      */
-    @Operation(summary= "Update a single commons")
+    @Operation(summary= "Update a single ucsb organization")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
     public UCSBOrgs updateOrgs(

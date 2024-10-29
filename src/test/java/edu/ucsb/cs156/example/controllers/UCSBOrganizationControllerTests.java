@@ -189,7 +189,7 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
     // Test for put, for updating an existing ucsbOrgs entity
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
-    public void admin_can_edit_an_existing_commons() throws Exception {
+    public void admin_can_edit_an_existing_ucsborg() throws Exception {
         // arrange
 
         UCSBOrgs skiOrigin = UCSBOrgs.builder()
@@ -228,7 +228,7 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
 
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
-    public void admin_cannot_edit_commons_that_does_not_exist() throws Exception {
+    public void admin_cannot_edit_ucbsorg_that_does_not_exist() throws Exception {
         // arrange
 
         UCSBOrgs abcOrg = UCSBOrgs.builder()
