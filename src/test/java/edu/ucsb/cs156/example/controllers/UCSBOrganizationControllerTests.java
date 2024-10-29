@@ -184,6 +184,69 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
             assertEquals("EntityNotFoundException", json.get("type"));
             assertEquals("UCSBOrgs with id ABC not found", json.get("message"));
     }
+
+
+
+    // Delete tests
+
+    @Test
+    public void logged_out_users_cannot_delete() throws Exception {
+        mockMvc.perform(delete("/api/ucsborganization/delete"))
+            .andExpect(status().is(403));
+    }
+
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void logged_in_regular_users_cannot_delete() throws Exception {
+        mockMvc.perform(delete("/api/ucsborganization/delete"))
+            .andExpect(status().is(403)); // only admins can post
+    }
+
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void admin_tries_to_delete_non_existant_orgnization_and_gets_right_error_message() throws Exception {
+        // arrange
+
+        when(ucsbOrgsRepository.findById(eq("WER"))).thenReturn(Optional.empty());
+
+        // act
+        MvcResult response = mockMvc.perform(
+            delete("/api/ucsborganization?orgCode=WER")
+                            .with(csrf()))
+            .andExpect(status().isNotFound()).andReturn();
+
+        // assert
+        verify(ucsbOrgsRepository, times(1)).findById("WER");
+        Map<String, Object> json = responseToJson(response);
+        assertEquals("UCSBOrgs with id WER not found", json.get("message"));
+    }
+
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void admin_can_delete_an_orgnization() throws Exception {
+        // arrange
+        UCSBOrgs skiing = UCSBOrgs.builder()
+            .orgCode("SKI")
+            .orgTranslationShort("SKIING CLUB")
+            .orgTranslation("SKIING CLUB AT UCSB")
+            .inactive(false)
+            .build();
+
+        when(ucsbOrgsRepository.findById(eq("SKI"))).thenReturn(Optional.of(skiing));
+
+        // act
+        MvcResult response = mockMvc.perform(
+            delete("/api/ucsborganization?orgCode=SKI")
+                            .with(csrf()))
+            .andExpect(status().isOk()).andReturn();
+        
+        // assert
+        verify(ucsbOrgsRepository, times(1)).findById("SKI");
+        verify(ucsbOrgsRepository, times(1)).delete(any());
+
+        Map<String, Object> json = responseToJson(response);
+        assertEquals("UCSBOrgs with id SKI deleted", json.get("message"));
+    }
     
 
     // Test for put, for updating an existing ucsbOrgs entity

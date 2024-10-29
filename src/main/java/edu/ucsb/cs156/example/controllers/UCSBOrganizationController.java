@@ -93,6 +93,24 @@ public class UCSBOrganizationController extends ApiController  {
     }
 
     /**
+     * Delete an organization. Accessible only to users with the role "ROLE_ADMIN".
+     * 
+     * @param orgCode code of the organization
+     * @return a message indiciating the organization was deleted
+     */
+    @Operation(summary = "Delete a UCSBOrg")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteOrganization(
+            @Parameter(name = "orgCode") @RequestParam String orgCode) {
+
+        UCSBOrgs organization = ucsbOrgsRepository.findById(orgCode)
+        .orElseThrow(() -> new EntityNotFoundException(UCSBOrgs.class, orgCode));
+
+        ucsbOrgsRepository.delete(organization);
+        return genericMessage("UCSBOrgs with id %s deleted".formatted(orgCode));
+    }
+  
      * Update a single ucsborg. Accessible only to users with the role "ROLE_ADMIN".
      * @param orgCode code of the diningcommons
      * @param incoming the new commons contents
