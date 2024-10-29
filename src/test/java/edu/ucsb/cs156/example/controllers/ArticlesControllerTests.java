@@ -5,6 +5,7 @@ import edu.ucsb.cs156.example.testconfig.TestConfig;
 import edu.ucsb.cs156.example.ControllerTestCase;
 import edu.ucsb.cs156.example.entities.Articles;
 import edu.ucsb.cs156.example.entities.Articles;
+import edu.ucsb.cs156.example.entities.Articles;
 import edu.ucsb.cs156.example.repositories.ArticlesRepository;
 
 import java.util.ArrayList;
@@ -200,5 +201,76 @@ public class ArticlesControllerTests extends ControllerTestCase {
                 String expectedJson = mapper.writeValueAsString(article1);
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_edit_an_existing_restaurant() throws Exception {
+                // arrange
+
+                Articles articleOrig = Articles.builder().id(67L)
+                                .title("Taco Bell")
+                                .url("American")
+                                .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
+                                .email("noreply@tacobell.com")
+                                .build();
+
+                Articles articleEdited = Articles.builder().id(67L)
+                                .title("Red Smoke Grill")
+                                .url("American")
+                                .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
+                                .email("noreply@tacobell.com")
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(articleEdited);
+
+                when(articlesRepository.findById(eq(67L))).thenReturn(Optional.of(articleOrig));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/articles?id=67")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(articlesRepository, times(1)).findById(67L);
+                verify(articlesRepository, times(1)).save(articleEdited); // should be saved with correct user
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(requestBody, responseString);
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_cannot_edit_restaurant_that_does_not_exist() throws Exception {
+                // arrange
+
+                Articles editedArticles = Articles.builder()
+                                .title("Red Smoke Grill")
+                                .url("American")
+                                .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
+                                .email("noreply@redsmokegrill.com")
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(editedArticles);
+
+                when(articlesRepository.findById(eq(67L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/articles?id=67")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+                verify(articlesRepository, times(1)).findById(67L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("Articles with id 67 not found", json.get("message"));
+
         }
 }
