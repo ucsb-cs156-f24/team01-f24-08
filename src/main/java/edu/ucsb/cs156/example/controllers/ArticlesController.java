@@ -37,6 +37,7 @@ public class ArticlesController extends ApiController {
     @Autowired
     ArticlesRepository articlesRepository;
 
+    @Operation(summary = "List all articles")
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_USER')")
     public Iterable<Articles> allArticles() {
@@ -44,16 +45,15 @@ public class ArticlesController extends ApiController {
         return article;
     }
 
-
-
-
+    @Operation(summary = "Create a new article")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public Articles postArticles(
-            @Parameter(name="title") @RequestParam String title,
-            @Parameter(name="url") @RequestParam String url,
-            @Parameter(name="explanation") @RequestParam String explanation,
-            @Parameter(name="email") @RequestParam String email,
-            @Parameter(name="date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("dateAdded") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateAdded)
+            @Parameter(name = "title") @RequestParam String title,
+            @Parameter(name = "url") @RequestParam String url,
+            @Parameter(name = "explanation") @RequestParam String explanation,
+            @Parameter(name = "email") @RequestParam String email,
+            @Parameter(name = "dateAdded", description = "date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("dateAdded") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateAdded)
             throws JsonProcessingException {
 
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -67,7 +67,6 @@ public class ArticlesController extends ApiController {
         article.setExplanation(explanation);
         article.setEmail(email);
         article.setDateAdded(dateAdded);
-
 
         // private String title;
         // private String url;
