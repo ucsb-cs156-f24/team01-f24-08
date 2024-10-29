@@ -94,11 +94,11 @@ import jakarta.validation.Valid;
 <span class="fc" id="L94">        Articles article = articlesRepository.findById(id)</span>
 <span class="fc" id="L95">                .orElseThrow(() -&gt; new EntityNotFoundException(Articles.class, id));</span>
 
-<span class="fc" id="L97">        article.setTitle(incoming.getTitle());</span>
-<span class="fc" id="L98">        article.setUrl(incoming.getUrl());</span>
-<span class="fc" id="L99">        article.setExplanation(incoming.getExplanation());</span>
-<span class="fc" id="L100">        article.setEmail(incoming.getEmail());</span>
-<span class="fc" id="L101">        article.setDateAdded(incoming.getDateAdded());</span>
+<span class="fc" id="L97">        article.setTitle(incoming.getTitle()); // private String title;</span>
+<span class="fc" id="L98">        article.setUrl(incoming.getUrl()); // private String url;</span>
+<span class="fc" id="L99">        article.setExplanation(incoming.getExplanation()); // private String explanation;</span>
+<span class="fc" id="L100">        article.setEmail(incoming.getEmail()); // private String email;</span>
+<span class="fc" id="L101">        article.setDateAdded(incoming.getDateAdded()); // private LocalDateTime dateAdded;</span>
 
 <span class="fc" id="L103">        articlesRepository.save(article);</span>
 
