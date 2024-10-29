@@ -74,7 +74,7 @@ import java.time.LocalDateTime;
 
     /**
      * Delete a single record from the table; use the value passed in as a @RequestParam to do a lookup by id. If a matching row is not found, throw an EntityNotFoundException.
-     **/
+     */
     @Operation(summary= &quot;Delete a UCSBDiningCommonsMenuItem by id&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
     @DeleteMapping(&quot;&quot;)
@@ -85,6 +85,49 @@ import java.time.LocalDateTime;
 
 <span class="fc" id="L86">        ucsbDiningCommonsMenuItemRepository.delete(ucsbDiningCommonsMenuItem);</span>
 <span class="fc" id="L87">        return genericMessage(&quot;UCSBDiningCommonsMenuItem with id %s deleted&quot;.formatted(id));</span>
+    }
+
+    /**
+     * Get a single record from the table; use the value passed in 
+     * as a @RequestParam to do a lookup by id. 
+     * If a matching row is found, update that row 
+     * with the values passed in as a JSON object. 
+     * If a matching row is not found, throw an EntityNotFoundException.
+     */
+    @Operation(summary= &quot;Update a Dining Commons Menu Item&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @PutMapping(&quot;&quot;)
+    public UCSBDiningCommonsMenuItem updateUCSBDiningCommonsMenuItem(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id,
+            @RequestBody @Valid UCSBDiningCommonsMenuItem incoming) {
+
+<span class="fc" id="L104">        UCSBDiningCommonsMenuItem ucsbDCMI = ucsbDiningCommonsMenuItemRepository.findById(id)</span>
+<span class="fc" id="L105">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));</span>
+
+<span class="fc" id="L107">        ucsbDCMI.setDiningCommonsCode((incoming.getDiningCommonsCode()));</span>
+<span class="fc" id="L108">        ucsbDCMI.setName(incoming.getName());</span>
+<span class="fc" id="L109">        ucsbDCMI.setStation(incoming.getStation());  </span>
+
+<span class="fc" id="L111">        ucsbDiningCommonsMenuItemRepository.save(ucsbDCMI);</span>
+
+<span class="fc" id="L113">        return ucsbDCMI;</span>
+    }
+
+    /**
+     * Get a single record from the table; use the value passed in
+     *  as a @RequestParam to do a lookup by id. 
+     * If a matching row is found, return the row as a JSON object, 
+     * otherwise throw an EntityNotFoundException.
+     */
+    @Operation(summary= &quot;Get a single UCSBDiningCommonsMenuItem by id&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;&quot;)
+    public UCSBDiningCommonsMenuItem getById(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L127">        UCSBDiningCommonsMenuItem ucsbDCMI = ucsbDiningCommonsMenuItemRepository.findById(id)</span>
+<span class="fc" id="L128">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));</span>
+
+<span class="fc" id="L130">        return ucsbDCMI;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
