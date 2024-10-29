@@ -203,28 +203,33 @@ public class ArticlesControllerTests extends ControllerTestCase {
                 assertEquals(expectedJson, responseString);
         }
 
+        // Test class modifications
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void admin_can_edit_an_existing_restaurant() throws Exception {
+        public void admin_can_edit_an_existing_article() throws Exception {
                 // arrange
-
-                Articles articleOrig = Articles.builder().id(67L)
-                                .title("Taco Bell")
-                                .url("American")
+                Articles articleOrig = Articles.builder()
+                                .title("Who is the best professor at UCSB?")
+                                .url("https://www.reddit.com/r/UCSantaBarbara/comments/1e46yoe/who_is_the_best_professor_youve_had_who_is_the/")
+                                .explanation("A Reddit thread discussing the best professors at UCSB.")
+                                .email("noreply@reddit.com")
                                 .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
-                                .email("noreply@tacobell.com")
+                                .id(67L)
                                 .build();
 
-                Articles articleEdited = Articles.builder().id(67L)
-                                .title("Red Smoke Grill")
-                                .url("American")
+                Articles articleEdited = Articles.builder()
+                                .title("Who is the best professor at UCSB?")
+                                .url("https://www.reddit.com/r/UCSantaBarbara/comments/1e46yoe/who_is_the_best_professor_youve_had_who_is_the/")
+                                .explanation("A Reddit thread discussing the best professors at UCSB.")
+                                .email("noreply@reddit.com")
                                 .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
-                                .email("noreply@tacobell.com")
+                                .id(67L)
                                 .build();
 
                 String requestBody = mapper.writeValueAsString(articleEdited);
 
                 when(articlesRepository.findById(eq(67L))).thenReturn(Optional.of(articleOrig));
+                when(articlesRepository.save(any(Articles.class))).thenReturn(articleEdited);
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -237,21 +242,22 @@ public class ArticlesControllerTests extends ControllerTestCase {
 
                 // assert
                 verify(articlesRepository, times(1)).findById(67L);
-                verify(articlesRepository, times(1)).save(articleEdited); // should be saved with correct user
+                verify(articlesRepository, times(1)).save(articleEdited);
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(requestBody, responseString);
         }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void admin_cannot_edit_restaurant_that_does_not_exist() throws Exception {
+        public void admin_cannot_edit_article_that_does_not_exist() throws Exception {
                 // arrange
 
                 Articles editedArticles = Articles.builder()
-                                .title("Red Smoke Grill")
-                                .url("American")
+                                .title("Who is the best professor at UCSB?")
+                                .url("https://www.reddit.com/r/UCSantaBarbara/comments/1e46yoe/who_is_the_best_professor_youve_had_who_is_the/")
+                                .explanation("A Reddit thread discussing the best professors at UCSB.")
+                                .email("noreply@reddit.com")
                                 .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
-                                .email("noreply@redsmokegrill.com")
                                 .build();
 
                 String requestBody = mapper.writeValueAsString(editedArticles);

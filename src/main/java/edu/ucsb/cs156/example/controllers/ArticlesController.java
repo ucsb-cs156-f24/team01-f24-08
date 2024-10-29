@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -19,7 +20,6 @@ import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.ArticlesRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
@@ -94,16 +94,14 @@ public class ArticlesController extends ApiController {
         Articles article = articlesRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Articles.class, id));
 
-        // ucsbDate.setQuarterYYYYQ(incoming.getQuarterYYYYQ());
-        article.setTitle(incoming.getTitle()); // private String title;
-        article.setUrl(incoming.getUrl()); // private String url;
-        article.setExplanation(incoming.getExplanation()); // private String explanation;
-        article.setEmail(incoming.getEmail()); // private String email;
-        article.setDateAdded(incoming.getDateAdded()); // private LocalDateTime dateAdded;
+        article.setTitle(incoming.getTitle());
+        article.setUrl(incoming.getUrl());
+        article.setExplanation(incoming.getExplanation());
+        article.setEmail(incoming.getEmail());
+        article.setDateAdded(incoming.getDateAdded());
 
-        Articles savedArticle = articlesRepository.save(article);
+        articlesRepository.save(article);
 
-        return savedArticle;
+        return article;
     }
-
 }
