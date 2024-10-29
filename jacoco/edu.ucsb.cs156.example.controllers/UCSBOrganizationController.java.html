@@ -91,5 +91,31 @@ import jakarta.validation.Valid;
 <span class="fc" id="L91">        .orElseThrow(() -&gt; new EntityNotFoundException(UCSBOrgs.class, orgCode));</span>
 <span class="fc" id="L92">        return organization;</span>
     }
+
+    /**
+     * Update a single ucsborg. Accessible only to users with the role &quot;ROLE_ADMIN&quot;.
+     * @param orgCode code of the diningcommons
+     * @param incoming the new commons contents
+     * @return the updated commons object
+     */
+    @Operation(summary= &quot;Update a single ucsb organization&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @PutMapping(&quot;&quot;)
+    public UCSBOrgs updateOrgs(
+            @Parameter(name=&quot;orgCode&quot;) @RequestParam String orgCode,
+            @RequestBody @Valid UCSBOrgs incoming) {
+
+<span class="fc" id="L108">        UCSBOrgs org = ucsbOrgsRepository.findById(orgCode)</span>
+<span class="fc" id="L109">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBOrgs.class, orgCode));</span>
+
+
+<span class="fc" id="L112">        org.setOrgTranslationShort(incoming.getOrgTranslationShort());</span>
+<span class="fc" id="L113">        org.setOrgTranslation(incoming.getOrgTranslation());</span>
+<span class="fc" id="L114">        org.setInactive(incoming.getInactive());</span>
+
+<span class="fc" id="L116">        ucsbOrgsRepository.save(org);</span>
+
+<span class="fc" id="L118">        return org;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
