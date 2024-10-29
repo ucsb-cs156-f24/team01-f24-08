@@ -4,7 +4,6 @@ import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
 import edu.ucsb.cs156.example.ControllerTestCase;
 import edu.ucsb.cs156.example.entities.Articles;
-import edu.ucsb.cs156.example.entities.Restaurant;
 import edu.ucsb.cs156.example.repositories.ArticlesRepository;
 
 import java.util.ArrayList;
@@ -221,16 +220,16 @@ public class ArticlesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                delete("/api/articles?id=15")
+                                delete("/api/articles?id=67")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
-                verify(articlesRepository, times(1)).findById(15L);
+                verify(articlesRepository, times(1)).findById(67L);
                 verify(articlesRepository, times(1)).delete(any());
 
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("Article with id 15 deleted", json.get("message"));
+                assertEquals("Article with id 67 deleted", json.get("message"));
         }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
@@ -243,14 +242,14 @@ public class ArticlesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                delete("/api/articles?id=15")
+                                delete("/api/articles?id=67")
                                                 .with(csrf()))
                                 .andExpect(status().isNotFound()).andReturn();
 
                 // assert
                 verify(articlesRepository, times(1)).findById(67L);
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("Articles with id 15 not found", json.get("message"));
+                assertEquals("Articles with id 67 not found", json.get("message"));
         }
 
         // Test class modifications
