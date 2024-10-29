@@ -94,11 +94,11 @@ public class ArticlesController extends ApiController {
         Articles article = articlesRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Articles.class, id));
 
-        article.setTitle(incoming.getTitle());
-        article.setUrl(incoming.getUrl());
-        article.setExplanation(incoming.getExplanation());
-        article.setEmail(incoming.getEmail());
-        article.setDateAdded(incoming.getDateAdded());
+        article.setTitle(incoming.getTitle()); // private String title;
+        article.setUrl(incoming.getUrl()); // private String url;
+        article.setExplanation(incoming.getExplanation()); // private String explanation;
+        article.setEmail(incoming.getEmail()); // private String email;
+        article.setDateAdded(incoming.getDateAdded()); // private LocalDateTime dateAdded;
 
         articlesRepository.save(article);
 
