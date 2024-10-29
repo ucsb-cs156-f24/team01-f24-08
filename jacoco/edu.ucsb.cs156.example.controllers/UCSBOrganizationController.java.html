@@ -93,6 +93,24 @@ import jakarta.validation.Valid;
     }
 
     /**
+     * Delete an organization. Accessible only to users with the role &quot;ROLE_ADMIN&quot;.
+     * 
+     * @param orgCode code of the organization
+     * @return a message indiciating the organization was deleted
+     */
+    @Operation(summary = &quot;Delete a UCSBOrg&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteOrganization(
+            @Parameter(name = &quot;orgCode&quot;) @RequestParam String orgCode) {
+
+<span class="fc" id="L107">        UCSBOrgs organization = ucsbOrgsRepository.findById(orgCode)</span>
+<span class="fc" id="L108">        .orElseThrow(() -&gt; new EntityNotFoundException(UCSBOrgs.class, orgCode));</span>
+
+<span class="fc" id="L110">        ucsbOrgsRepository.delete(organization);</span>
+<span class="fc" id="L111">        return genericMessage(&quot;UCSBOrgs with id %s deleted&quot;.formatted(orgCode));</span>
+    }
+    /* 
      * Update a single ucsborg. Accessible only to users with the role &quot;ROLE_ADMIN&quot;.
      * @param orgCode code of the diningcommons
      * @param incoming the new commons contents
@@ -105,17 +123,17 @@ import jakarta.validation.Valid;
             @Parameter(name=&quot;orgCode&quot;) @RequestParam String orgCode,
             @RequestBody @Valid UCSBOrgs incoming) {
 
-<span class="fc" id="L108">        UCSBOrgs org = ucsbOrgsRepository.findById(orgCode)</span>
-<span class="fc" id="L109">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBOrgs.class, orgCode));</span>
+<span class="fc" id="L126">        UCSBOrgs org = ucsbOrgsRepository.findById(orgCode)</span>
+<span class="fc" id="L127">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBOrgs.class, orgCode));</span>
 
 
-<span class="fc" id="L112">        org.setOrgTranslationShort(incoming.getOrgTranslationShort());</span>
-<span class="fc" id="L113">        org.setOrgTranslation(incoming.getOrgTranslation());</span>
-<span class="fc" id="L114">        org.setInactive(incoming.getInactive());</span>
+<span class="fc" id="L130">        org.setOrgTranslationShort(incoming.getOrgTranslationShort());</span>
+<span class="fc" id="L131">        org.setOrgTranslation(incoming.getOrgTranslation());</span>
+<span class="fc" id="L132">        org.setInactive(incoming.getInactive());</span>
 
-<span class="fc" id="L116">        ucsbOrgsRepository.save(org);</span>
+<span class="fc" id="L134">        ucsbOrgsRepository.save(org);</span>
 
-<span class="fc" id="L118">        return org;</span>
+<span class="fc" id="L136">        return org;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
