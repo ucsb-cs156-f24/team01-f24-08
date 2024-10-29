@@ -4,6 +4,7 @@ import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
 import edu.ucsb.cs156.example.ControllerTestCase;
 import edu.ucsb.cs156.example.entities.Articles;
+import edu.ucsb.cs156.example.entities.Articles;
 import edu.ucsb.cs156.example.repositories.ArticlesRepository;
 
 import java.util.ArrayList;
@@ -57,6 +58,12 @@ public class ArticlesControllerTests extends ControllerTestCase {
                                 .andExpect(status().is(200)); // logged
         }
 
+        @Test
+        public void logged_out_users_cannot_get_by_id() throws Exception {
+                mockMvc.perform(get("/api/articles?id=7"))
+                                .andExpect(status().is(403)); // logged out users can't get by id
+        }
+
         // Authorization tests for /api/articles/post
         // (Perhaps should also have these for put and delete)
 
@@ -71,6 +78,57 @@ public class ArticlesControllerTests extends ControllerTestCase {
         public void logged_in_regular_users_cannot_post() throws Exception {
                 mockMvc.perform(post("/api/articles/post"))
                                 .andExpect(status().is(403)); // only admins can post
+        }
+
+        // // Tests with mocks for database actions
+
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
+
+                // arrange
+
+                Articles article = Articles.builder()
+                                .title("Who is the best professor at UCSB?")
+                                .url("https://www.reddit.com/r/UCSantaBarbara/comments/1e46yoe/who_is_the_best_professor_youve_had_who_is_the/")
+                                .explanation("A Reddit thread discussing the best professors at UCSB.")
+                                .email("noreply@reddit.com")
+                                .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
+                                .build();
+
+                when(articlesRepository.findById(eq(7L))).thenReturn(Optional.of(article)); // Check not sure why id is
+                                                                                            // 7
+
+                // act
+                MvcResult response = mockMvc.perform(get("/api/articles?id=7"))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+
+                verify(articlesRepository, times(1)).findById(eq(7L));
+                String expectedJson = mapper.writeValueAsString(article);
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(expectedJson, responseString);
+        }
+
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
+
+                // arrange
+
+                when(articlesRepository.findById(eq(7L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(get("/api/articles?id=7"))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+
+                verify(articlesRepository, times(1)).findById(eq(7L));
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("EntityNotFoundException", json.get("type"));
+                assertEquals("Articles with id 7 not found", json.get("message"));
         }
 
         @WithMockUser(roles = { "USER" })
@@ -117,7 +175,7 @@ public class ArticlesControllerTests extends ControllerTestCase {
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void an_admin_user_can_post_a_new_ucsbdate() throws Exception {
+        public void an_admin_user_can_post_a_new_article() throws Exception {
                 // arrange
                 LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
 
